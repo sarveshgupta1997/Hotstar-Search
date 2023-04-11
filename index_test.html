@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="shortcut icon" type="image/png" href="https://secure-media.hotstar.com/web-assets/prod/D+H_favicon.ico"/>
+    <style>
+        body{
+            background-color: antiquewhite;
+            margin: 0;
+            padding: 0;
+            font-family: "Roboto","HelveticaNeue-Light",sans-serif;
+        }
+        #navbar{
+            background-color: #131A27;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 80px;
+        }
+        .right,.left{
+            display: flex;
+            align-items: center;
+        }
+        .left>a{                    
+            margin-left: 30px;
+            color: #bebfc5;
+            text-decoration: none;
+            font-size: 17px;
+        }
+        .left>a:hover{           
+            color: #dbdbdf;
+        }
+        .left>a:last-child{     
+            color: #FFAA05;
+            font-weight: 900;
+            margin-top: -2px;
+            font-size: 19px;
+        }
+        .left>a:last-child:hover{           
+            color: #FFAA05;
+        }
+        .left>img:nth-child(2){            
+            margin-left: 30px;
+            margin-top: -10px;
+        }
+        .right>input{
+            font-size: 17px;            
+            margin: 10px;
+            padding: 4px 0px;
+            color: #bebfc5;
+            width: 250px;
+            border: none;
+            border-bottom: 1px solid #bebfc5;
+            border-radius: 2px;
+            background-color: #131A27;
+        }
+        .right>input:focus {
+            width: 350px;
+            transition: width 0.3s;
+            outline: none;
+        }
+        .right>input::placeholder{
+            color: #bebfc5;
+        }
+        .right>button{
+            border: 1px solid #1F80E0;
+            border-radius: 6px;
+            color: #1F80E0;
+            background-color: #131A27;
+            padding: 5px 15px;
+            font-size: 12px;            
+            margin-left: 15px;
+        }
+        .right>img{         
+            margin-left: 15px;
+            width: 30px;
+        }
+        #container{
+            width: 95%;
+            display:grid;
+            grid-template-columns: repeat(4,1fr);
+            margin: auto;
+            margin-top:50px;
+            gap: 50px;
+        }
+        #container>div{
+            margin: auto;
+            width: 100%;
+            text-align: center;
+            border-radius: 5px;
+            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+            overflow: hidden;
+            background-color: white;
+        }
+        #container>div>img:nth-child(2){
+            height: 400px;
+            width: 100%;
+            object-fit: cover;            
+        }
+        
+        #loader{
+            display: flex;
+            justify-content: center;
+        }
+        #loader iframe{
+            width: 600px;
+            height: 400px;
+        }
+
+        .recomended_icon{
+            width: 120px;
+            position: absolute;
+            z-index: 999;
+            margin-left: -40px;
+            margin-top: -60px;
+            
+            object-fit: cover; 
+        }
+        #frame {
+            height: 75vh;
+            width: 80%;
+            display: block;
+            margin: auto;
+            object-fit: cover;
+            border-radius: 7px;            
+            /* margin-top: 40px; */
+        }
+    </style>
+</head>
+<body>
+    
+    <input id="search" oninput="search_movie()" type="text" placeholder="Search">
+    
+    
+    <div id="container">
+        
+    
+
+    
+</body>
+</html>
+<script>
+
+    let movie,error,url,data,movie_Data;
+    search_movie=()=>{
+        movie=document.querySelector("#search").value;
+
+        url="https://www.omdbapi.com/?apikey=5cbf57f9&s="+movie;
+        // url=`https://www.omdbapi.com/?apikey=5cbf57f9&s=avengers`;
+        
+        async function get_Data(){
+            try{
+                let res = await fetch(url);
+                let out = await res.json();
+                data = out;
+                displayData(data);
+            }catch(err){
+                console.log(err);
+            }
+        }        
+        get_Data();
+    }
+
+    displayData=(data)=>{
+
+        data.Search.forEach((el,i)=>{ 
+            console.log(el);
+            let image=document.createElement("img")
+            image.src=el.Poster;
+            
+            let title=document.createElement("p")
+            title.innerText=el.Title;
+
+            let year=document.createElement("h2")
+            year.innerText=el.Year; 
+
+            let rating=document.createElement("p")
+            rating.innerText=el.imdbID;
+
+            let type=document.createElement("p")
+            type.innerText=el.Type;
+
+            div=document.createElement("div");
+            div.append(image,title,year,rating,type);
+            document.querySelector("#container").append(div);
+            
+        });
+        
+    };
+
+</script>
